@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         // Attach ItemTouchHelper
-        val movieItemTouchHelper = ItemTouchHelper(MovieItemTouchHelper(movies))
+        val movieItemTouchHelper = ItemTouchHelper(MovieItemTouchHelperCallback(movies))
         movieItemTouchHelper.attachToRecyclerView(recyclerView)
     }
 }
