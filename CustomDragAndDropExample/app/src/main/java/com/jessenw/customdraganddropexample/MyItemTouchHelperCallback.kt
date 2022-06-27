@@ -55,13 +55,6 @@ class MyItemTouchHelperCallback: ItemTouchHelper.Callback() {
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
-        val viewHolderX = viewHolder.itemView.x
-        val viewHolderY = viewHolder.itemView.y
-
-//        recyclerView.findChildViewUnder(dX + viewHolderX, dY + viewHolderY)?.let { view ->
-//            println("Monkey: Has view")
-//            view.translationX += cellHoverOffset
-//        }
         MyItemTouchUIUtil.instance.onDraw(c, recyclerView, viewHolder.itemView, dX, dY,
             actionState, isCurrentlyActive)
     }

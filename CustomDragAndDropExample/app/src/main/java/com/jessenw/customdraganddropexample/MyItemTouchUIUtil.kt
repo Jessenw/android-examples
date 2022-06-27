@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MyItemTouchUIUtil: ItemTouchUIUtil {
 
-    val cursorHorizontalPadding = 8
-
     companion object {
         var instance = MyItemTouchUIUtil()
     }
@@ -29,7 +27,7 @@ class MyItemTouchUIUtil: ItemTouchUIUtil {
     ) {
         if (view != null && recyclerView != null) {
             if (Build.VERSION.SDK_INT >= 21 && isCurrentlyActive) {
-                val newElevation = 1f + findMaxElevation(recyclerView, view)
+                val newElevation = 1f + findMaxElevation(recyclerView)
                 ViewCompat.setElevation(view, newElevation)
             }
             view.translationX = dX
@@ -56,19 +54,9 @@ class MyItemTouchUIUtil: ItemTouchUIUtil {
                 c.drawRect(rect, paint)
             }
         }
-
-        // Debug
-        if (c != null && view != null) {
-            val originX = (dX + view.top).toInt()
-            val originY = (dY + view.left).toInt()
-            val paint = Paint()
-            paint.color = Color.RED
-            val rect = Rect(originX, originY, originX + 10, originY + 10)
-            c.drawRect(rect, paint)
-        }
     }
 
-    private fun findMaxElevation(recyclerView: RecyclerView, view: View): Float {
+    private fun findMaxElevation(recyclerView: RecyclerView): Float {
         val childCount = recyclerView.childCount
         var max = 0f
         for (i in 0 until childCount) {
