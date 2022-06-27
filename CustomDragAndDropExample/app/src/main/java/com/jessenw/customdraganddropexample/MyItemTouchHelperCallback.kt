@@ -85,4 +85,17 @@ class MyItemTouchHelperCallback: ItemTouchHelper.Callback() {
         mTargetCurrent = null
         mTargetNew = null
     }
+
+    override fun chooseDropTarget(
+        selected: RecyclerView.ViewHolder,
+        dropTargets: MutableList<RecyclerView.ViewHolder>,
+        curX: Int,
+        curY: Int
+    ): RecyclerView.ViewHolder {
+        return dropTargets.first()
+    }
+
+    override fun getMoveThreshold(viewHolder: RecyclerView.ViewHolder): Float {
+        return .1f
+    }
 }
