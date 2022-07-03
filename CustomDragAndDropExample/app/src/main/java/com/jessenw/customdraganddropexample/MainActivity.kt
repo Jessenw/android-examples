@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         val adapter = MyAdapter(images)
         recyclerView.adapter = adapter
 
-        val itemTouchHelper = ItemTouchHelper(MyItemTouchHelperCallback())
+        val itemTouchHelper = MyItemTouchHelper(MyItemTouchHelperCallback(recyclerView))
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 }

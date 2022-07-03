@@ -1,10 +1,13 @@
 package com.jessenw.customdraganddropexample
 
 import android.graphics.Canvas
+import android.view.GestureDetector
+import android.view.MotionEvent
+import androidx.core.view.GestureDetectorCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class MyItemTouchHelperCallback: ItemTouchHelper.Callback() {
+class MyItemTouchHelperCallback(val recyclerView: RecyclerView): ItemTouchHelper.Callback() {
 
     private val cellHoverOffset = 16f
 
@@ -12,6 +15,33 @@ class MyItemTouchHelperCallback: ItemTouchHelper.Callback() {
 
     private var mTargetCurrent: RecyclerView.ViewHolder? = null
     private var mTargetNew: RecyclerView.ViewHolder? = null
+
+    private var mGestureDetector: GestureDetectorCompat? = null
+    private var mItemTouchHelperGestureListener: MyItemTouchHelperGestureListener? = null
+    private val mOnItemTouchListener = object: RecyclerView.OnItemTouchListener {
+        override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+            mGestureDetector?.onTouchEvent(e)
+            println("Biscuit: ${e.x}, ${e.y}")
+            return true
+        }
+
+        override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
+            return
+        }
+
+        override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
+            return
+        }
+
+    }
+
+    init {
+        mItemTouchHelperGestureListener = MyItemTouchHelperGestureListener()
+        mGestureDetector = GestureDetectorCompat(recyclerView.context, mItemTouchHelperGestureListener)
+
+        // Configure callbacks
+        recyclerView.addOnItemTouchListener(mOnItemTouchListener)
+    }
 
     override fun getMovementFlags(
         recyclerView: RecyclerView,
@@ -97,5 +127,22 @@ class MyItemTouchHelperCallback: ItemTouchHelper.Callback() {
 
     override fun getMoveThreshold(viewHolder: RecyclerView.ViewHolder): Float {
         return .1f
+    }
+
+    inner class MyItemTouchHelperGestureListener: GestureDetector.SimpleOnGestureListener() {
+
+        // By default, SimpleOnGestureListener sets this to false, so no events are detected.
+        // All gestures begin with an onDown so we need this to be true
+        override fun onDown(e: MotionEvent?): Boolean = true
+
+        override fun onLongPress(e: MotionEvent?) {
+            e ?: return
+
+            recyclerView.findChildViewUnder(e.x, e.y)?.let { child ->
+                recyclerView.getChildViewHolder(child)?.let { viewHolder ->
+                    val pointerId = e.getPointerId(0)
+                }
+            }
+        }
     }
 }
